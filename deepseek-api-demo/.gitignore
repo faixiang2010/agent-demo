@@ -1,0 +1,24 @@
+# Maven / Java
+target/
+*.jar
+*.class
+*.war
+*.ear
+*.log
+.mvn/
+mvnw
+mvnw.cmd
+
+# IDE
+.idea/
+.vscode/
+*.iml
+.classpath
+.project
+.settings/
+
+# 环境与系统
+.env
+.env.local
+.DS_Store
+Thumbs.db

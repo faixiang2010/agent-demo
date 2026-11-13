@@ -1,0 +1,10 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: deepseek-api-demo
+  codec:
+    # WebFlux 编解码器（含 multipart 文件缓冲）的内存上限。
+    # 默认仅 256KB，Files API 支持最大 64MiB 图片，需调大避免大文件上传失败。
+    max-in-memory-size: 70MB

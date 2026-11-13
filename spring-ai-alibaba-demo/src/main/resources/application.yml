@@ -1,0 +1,113 @@
+spring:
+  application:
+    name: spring-ai-alibaba-demo
+    port: 8081
+  ai:
+    dashscope:
+      api-key: ${AI_DASHSCOPE_API_KEY:}
+      chat:
+        options:
+          model: qwen-plus
+          temperature: 0.7
+    openai:
+      base-url: ${DEEPSEEK_BASE_URL:https://api.deepseek.com}
+      api-key: ${DEEPSEEK_API_KEY:}
+      chat:
+        options:
+          model: deepseek-chat
+          temperature: 0.7
+    # ===== SAA Admin 快速开始第 6 步：Nacos Prompt 代理配置 =====
+    # enabled=true 时 NacosAgentConfig 才会激活（1.1.x 新增开关）
+    # serverAddr 指向部署 Nacos 的机器（与 Admin 后台使用同一个 Nacos）
+    # promptKey 必须与在 SAA Admin 平台「提示词管理」中创建的 Prompt 标识一致
+    alibaba:
+      agent:
+        proxy:
+          nacos:
+            enabled: ${NACOS_PROXY_ENABLED:false}
+            serverAddr: ${NACOS_SERVER_ADDR:}
+            username: ${NACOS_USERNAME:nacos}
+            password: ${NACOS_PASSWORD:nacos}
+            promptKey: ${NACOS_PROMPT_KEY:demo-prompt}
+      # ===== 可观测性：ARMS observation 开关（对应文档 spring.ai.alibaba.arms.*） =====
+      arms:
+        enabled: false
+        tool:
+          enabled: false
+        model:
+          capture-input: false
+          capture-output: false
+    # ===== 观测日志开关 =====
+    chat:
+      client:
+        observations:
+          log-prompt: true
+      observations:
+        log-prompt: true
+        log-completion: true
+    image:
+      observations:
+        log-prompt: true
+    vectorstore:
+      observations:
+        log-query-response: true
+
+# 独立 RagDemo 显式读取此配置，不需要启动 Spring Boot。
+rag:
+  milvus:
+    host: ${MILVUS_HOST:}
+    port: ${MILVUS_PORT:19530}
+    database: DEEPSEEK
+    collection: deepseek_home_knowledge_v1
+    username: ${MILVUS_USERNAME:}
+    password: ${MILVUS_PASSWORD:}
+    ssl: ${MILVUS_SSL:false}
+  knowledge:
+    url: https://www.deepseek.com/
+    chunk-size: 800
+    chunk-overlap: 100
+
+# Admin 后台占用本机 8080，本应用避让到 8081
+server:
+  port: 8081
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+management:
+  # ===== 本地开发环境关闭 OTLP tracing 上报，避免超时日志 =====
+  tracing:
+    enabled: false
+    sampling:
+      # 采样率 1.0 = 100%
+      probability: 1.0
+  otlp:
+    tracing:
+      # 注意：Spring Boot 3.5.x 中 tracing 的 endpoint 直接在 management.otlp.tracing 下（无 .export. 层，3.3.x 亦如此）
+      # 上报到 SAA Admin 的 OTLP Collector（Collector 部署在 <your-otlp-host>:4318，与 Admin 后台共用）
+      endpoint: ${OTLP_TRACING_ENDPOINT:http://<your-otlp-host>:4318/v1/traces}
+    metrics:
+      export:
+        enabled: false
+    logging:
+      export:
+        enabled: false
+  opentelemetry:
+    resource-attributes:
+      service:
+        # 在 Admin「服务监控」中显示的服务名，勿与 Admin 自身（spring-ai-alibaba-studio）重名
+        name: agent-nacos-demo
+        version: 1.0
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.alibaba.cloud.ai: INFO

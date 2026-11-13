@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeepSeek API 测试台</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="appbar">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M8.5 12h7M12 8.5v7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <span class="brand-name">DeepSeek API</span>
+      <span class="brand-sub">测试台</span>
+    </div>
+
+    <div class="config">
+      <label class="cfg-field">
+        <span>Base URL</span>
+        <input id="baseUrl" type="text" placeholder="https://api.deepseek.com" spellcheck="false">
+      </label>
+      <label class="cfg-field grow">
+        <span>API Key</span>
+        <input id="apiKey" type="password" placeholder="sk-..." spellcheck="false" autocomplete="off">
+      </label>
+      <button id="saveConfig" class="btn">保存</button>
+      <button id="testKey" class="btn ghost">测试连通</button>
+    </div>
+  </header>
+
+  <nav class="tabs" id="groupTabs" role="tablist" aria-label="接口主题分类"></nav>
+
+  <div class="workspace">
+    <aside class="ep-pane" aria-label="当前主题下的接口">
+      <div class="ep-head" id="epHead">接口</div>
+      <div class="ep-list" id="epList" role="listbox" aria-label="接口列表"></div>
+    </aside>
+
+    <div class="splitter" id="splitterEp" role="separator" aria-orientation="vertical"
+         aria-label="拖动调整接口列表宽度" tabindex="0" title="拖动调整宽度，双击复位"></div>
+
+    <section class="editor-pane" aria-label="请求参数">
+      <div class="pane-head">
+        <div class="pane-title">
+          <span class="cat-tag" id="apiCategory"></span>
+          <h1 id="apiName">请选择接口</h1>
+        </div>
+      </div>
+      <div class="api-meta" id="apiMeta"></div>
+      <div class="editor-scroll">
+        <div class="plain-desc hidden" id="plainDesc"></div>
+        <ul class="api-notes hidden" id="apiNotes"></ul>
+        <div id="paramArea"></div>
+      </div>
+    </section>
+
+    <div class="splitter" id="splitterEditor" role="separator" aria-orientation="vertical"
+         aria-label="拖动调整参数区宽度" tabindex="0" title="拖动调整宽度，双击复位"></div>
+
+    <section class="result-pane" aria-label="响应结果">
+      <div class="pane-head result-head">
+        <h2>响应结果</h2>
+        <div class="result-status">
+          <span id="statusBadge" class="badge hidden"></span>
+          <span id="timeCost" class="meta-text"></span>
+          <span id="tokenUsage" class="meta-text"></span>
+        </div>
+        <div class="head-actions">
+          <div class="seg hidden" id="viewToggle" role="group" aria-label="结果视图">
+            <button id="viewChatBtn" class="seg-btn active" type="button">对话</button>
+            <button id="viewJsonBtn" class="seg-btn" type="button">JSON</button>
+          </div>
+          <button id="stopCall" class="btn ghost small" type="button" disabled>停止</button>
+          <button id="netToggle" class="btn ghost small" type="button" aria-expanded="false">网络</button>
+          <button id="copyResult" class="btn ghost small" type="button">复制</button>
+          <button id="clearResult" class="btn ghost small" type="button">清空</button>
+        </div>
+      </div>
+      <div class="result-body">
+        <div id="chatView" class="chat-view"></div>
+        <pre id="resultBox" class="result-box"></pre>
+      </div>
+    </section>
+  </div>
+
+  <div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
+  <aside id="netDrawer" class="drawer" role="dialog" aria-modal="true" aria-labelledby="netDrawerTitle" hidden>
+    <div class="drawer-head">
+      <h2 id="netDrawerTitle">网络交互信息</h2>
+      <button id="netClose" class="icon-btn" type="button" aria-label="关闭">×</button>
+    </div>
+    <div class="drawer-body" id="netBody"></div>
+  </aside>
+
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

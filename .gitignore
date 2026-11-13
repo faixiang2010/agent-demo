@@ -1,0 +1,120 @@
+# ============ 通用 ============
+# 环境变量和密钥
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# 系统文件
+.DS_Store
+Thumbs.db
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ============ Maven / Java ============
+target/
+*.jar
+*.class
+*.war
+*.ear
+*.iml
+*.log
+.mvn/wrapper/maven-wrapper.jar
+mvnw
+mvnw.cmd
+
+# ============ Python ============
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+.eggs/
+.venv/
+venv/
+env/
+ENV/
+dist/
+build/
+develop-eggs/
+downloads/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+
+# LangGraph / AgentScope 运行时数据
+.langgraph_api/*.pckl
+.agentscope/
+
+# uv lock 文件（可选提交）
+uv.lock
+
+# ============ Node.js / Electron ============
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+dist/
+build/
+*.tsbuildinfo
+.cache/
+.parcel-cache/
+.next/
+out/
+.nuxt/
+.output/
+.vuepress/dist/
+.svelte-kit/
+.vite/
+.astro/
+.turbo
+.pnpm-store
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.vscode-test
+
+# Electron
+out/
+release/
+*.dmg
+*.exe
+*.deb
+*.rpm
+*.zip
+*.pkg
+
+# ============ 报告 / 日志 ============
+*.log
+logs/
+reports/
+cleanup-*.log
+run*.log
+
+# ============ AgentScope / LangGraph 工作区 ============
+workspace/*
+!workspace/.gitkeep

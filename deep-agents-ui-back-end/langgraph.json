@@ -1,0 +1,9 @@
+{
+  "dependencies": ["."],
+  "graphs": {
+    "general-assistant": "./app/graphs.py:general_assistant",
+    "code-assistant": "./app/graphs.py:code_assistant",
+    "data-analyst": "./app/graphs.py:data_analyst",
+    "agent": "./app/graphs.py:agent"
+  }
+}

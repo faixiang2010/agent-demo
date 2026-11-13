@@ -1,0 +1,36 @@
+{
+  // 项目名称
+  "name": "crew_demo",
+
+  // 关联的 Agent，注意这里改成了 researcher，你需要同步修改 agents 文件夹里的文件名
+  "agents": ["researcher"],
+
+  "tasks": [
+    {
+      // 任务ID，改成了更清晰的名字
+      "name": "research_task",
+
+      // 任务描述：告诉Agent具体怎么做（修复了之前填反的问题）
+      "description": "针对 {topic} 进行全面深度调研，搜集最新进展、关键数据和权威见解。整理成结构清晰、逻辑严密的研究笔记。",
+
+      // 预期输出：最终交出来的东西长什么样
+      "expected_output": "一份结构完整、逻辑清晰、包含具体数据和参考来源链接的中文 Markdown 格式研究报告。",
+
+      // 指定由哪个 Agent 来做，这里必须和上面的 agents 名字一致
+      "agent": "researcher"
+    }
+  ],
+
+  // 执行流程：顺序执行
+  "process": "sequential",
+  "verbose": true,
+  "memory": false,
+
+  // 指定 Crew 级别的大模型（防止 .env 不生效）
+  "chat_llm": "deepseek/deepseek-flash",
+
+  // 设置你真实的主题，这样运行时就不用再手动输入了
+  "inputs": {
+    "topic": "2026年AI智能体框架的发展趋势"
+  }
+}

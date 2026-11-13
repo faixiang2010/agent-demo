@@ -1,0 +1,1235 @@
+[
+  {
+    "id": "list-models",
+    "group": "基础信息",
+    "name": "列出模型",
+    "description": "列出当前可用的模型及其能力（上下文长度、是否支持图片输入等）。",
+    "method": "GET",
+    "path": "/models",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": false,
+    "contentType": "application/json",
+    "authMode": "bearer",
+    "extraHeaders": null,
+    "params": [],
+    "example": null,
+    "imageKind": null,
+    "notes": [
+      "无需参数，直接调用即可。可用于校验 API Key 是否有效。"
+    ],
+    "plain": "看你现在能调哪些模型、各自支持什么能力（比如能不能看图）。就像翻菜单，知道能点哪些菜。",
+    "outputType": "json"
+  },
+  {
+    "id": "get-balance",
+    "group": "基础信息",
+    "name": "查询余额",
+    "description": "查询当前账号的余额详情（币种、总余额、赠金余额、充值余额）。",
+    "method": "GET",
+    "path": "/user/balance",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": false,
+    "contentType": "application/json",
+    "authMode": "bearer",
+    "extraHeaders": null,
+    "params": [],
+    "example": null,
+    "imageKind": null,
+    "notes": [],
+    "plain": "查一下账户里还剩多少钱，够不够继续调用。",
+    "outputType": "json"
+  },
+  {
+    "id": "model-detail",
+    "group": "基础信息",
+    "name": "查询模型详情",
+    "description": "查询单个模型的详细信息：上下文长度、最大输出、支持的输入模态与推理强度等级等。",
+    "method": "GET",
+    "path": "/models/{model}",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": false,
+    "contentType": "application/json",
+    "authMode": "bearer",
+    "extraHeaders": null,
+    "params": [
+      {
+        "name": "model",
+        "label": "模型 ID",
+        "type": "text",
+        "in": "path",
+        "required": true,
+        "defaultValue": "deepseek-flash",
+        "options": null
+      }
+    ],
+    "example": null,
+    "imageKind": null,
+    "notes": [
+      "官方文档未单独列出该端点，实测可用。",
+      "模型 ID 可先通过「列出模型」查看。"
+    ],
+    "plain": "看某一个模型的具体参数：上下文有多长、最多能输出多少、能不能看图。",
+    "outputType": "json"
+  },
+  {
+    "id": "chat-basic",
+    "group": "对话补全",
+    "name": "基础对话",
+    "description": "最常用的对话补全：system + user 消息，支持流式输出。",
+    "method": "POST",
+    "path": "/chat/completions",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": true,
+    "contentType": "application/json",
+    "authMode": "bearer",
+    "extraHeaders": null,
+    "params": [
+      {
+        "name": "model",
+        "label": "模型",
+        "type": "select",
+        "in": "body",
+        "required": true,
+        "defaultValue": "deepseek-flash",
+        "options": [
+          "deepseek-flash",
+          "deepseek-v4-pro"
+        ]
+      },
+      {
+        "name": "temperature",
+        "label": "temperature",
+        "type": "number",
+        "in": "body",
+        "required": false,
+        "defaultValue": 1,
+        "options": null
+      },
+      {
+        "name": "max_tokens",
+        "label": "max_tokens",
+        "type": "number",
+        "in": "body",
+        "required": false,
+        "defaultValue": 2048,
+        "options": null
+      }
+    ],
+    "example": {
+      "model": "deepseek-flash",
+      "messages": [
+        {
+          "role": "system",
+          "content": "你是一个乐于助人的中文助手。"
+        },
+        {
+          "role": "user",
+          "content": "你好，请用一句话介绍你自己"
+        }
+      ],
+      "temperature": 1,
+      "max_tokens": 2048,
+      "stream": false
+    },
+    "imageKind": null,
+    "notes": [
+      "支持流式输出：勾选上方「流式输出」后点击调用。"
+    ],
+    "plain": "最常用的聊天接口——发一句话，让 AI 回你一句话。",
+    "outputType": "chat"
+  },
+  {
+    "id": "chat-thinking",
+    "group": "对话补全",
+    "name": "思考模式",
+    "description": "开启思维链推理，响应中返回 reasoning_content（思考过程）与 content（最终答案）。",
+    "method": "POST",
+    "path": "/chat/completions",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": true,
+    "contentType": "application/json",
+    "authMode": "bearer",
+    "extraHeaders": null,
+    "params": [
+      {
+        "name": "model",
+        "label": "模型",
+        "type": "select",
+        "in": "body",
+        "required": true,
+        "defaultValue": "deepseek-v4-pro",
+        "options": [
+          "deepseek-flash",
+          "deepseek-v4-pro"
+        ]
+      },
+      {
+        "name": "max_tokens",
+        "label": "max_tokens",
+        "type": "number",
+        "in": "body",
+        "required": false,
+        "defaultValue": 4096,
+        "options": null
+      }
+    ],
+    "example": {
+      "model": "deepseek-v4-pro",
+      "messages": [
+        {
+          "role": "user",
+          "content": "9.11 和 9.9 哪个大？请说明理由。"
+        }
+      ],
+      "thinking": {
+        "type": "enabled"
+      },
+      "reasoning_effort": "high",
+      "max_tokens": 4096,
+      "stream": false
+    },
+    "imageKind": null,
+    "notes": [
+      "thinking.type 默认即为 enabled，可设为 disabled 关闭。",
+      "reasoning_effort 可选 high / max（low、medium 会映射为 high）。",
+      "思考模式下 temperature、top_p 不生效。"
+    ],
+    "plain": "让 AI 先在心里想一遍再回答，适合需要推理的难题（数学、逻辑、比较大小等）。",
+    "outputType": "chat"
+  },
+  {
+    "id": "chat-multi-turn",
+    "group": "对话补全",
+    "name": "多轮对话",
+    "description": "携带历史 user / assistant 消息，验证上下文记忆。",
+    "method": "POST",
+    "path": "/chat/completions",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": true,
+    "contentType": "application/json",
+    "authMode": "bearer",
+    "extraHeaders": null,
+    "params": [
+      {
+        "name": "model",
+        "label": "模型",
+        "type": "select",
+        "in": "body",
+        "required": true,
+        "defaultValue": "deepseek-flash",
+        "options": [
+          "deepseek-flash",
+          "deepseek-v4-pro"
+        ]
+      }
+    ],
+    "example": {
+      "model": "deepseek-flash",
+      "messages": [
+        {
+          "role": "system",
+          "content": "你是一个乐于助人的中文助手。"
+        },
+        {
+          "role": "user",
+          "content": "我叫小明，今年 28 岁。"
+        },
+        {
+          "role": "assistant",
+          "content": "你好，小明！很高兴认识你。"
+        },
+        {
+          "role": "user",
+          "content": "我叫什么名字？今年多大？"
+        }
+      ],
+      "stream": false
+    },
+    "imageKind": null,
+    "notes": [],
+    "plain": "带上之前聊过的内容，让 AI 记得上下文，接着往下聊。",
+    "outputType": "chat"
+  },
+  {
+    "id": "chat-json",
+    "group": "对话补全",
+    "name": "JSON 输出",
+    "description": "通过 response_format=json_object 强制模型输出合法 JSON。",
+    "method": "POST",
+    "path": "/chat/completions",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": true,
+    "contentType": "application/json",
+    "authMode": "bearer",
+    "extraHeaders": null,
+    "params": [
+      {
+        "name": "model",
+        "label": "模型",
+        "type": "select",
+        "in": "body",
+        "required": true,
+        "defaultValue": "deepseek-flash",
+        "options": [
+          "deepseek-flash",
+          "deepseek-v4-pro"
+        ]
+      }
+    ],
+    "example": {
+      "model": "deepseek-flash",
+      "messages": [
+        {
+          "role": "system",
+          "content": "请严格以 JSON 格式输出，字段为 name、age、city，不要输出任何其他内容。"
+        },
+        {
+          "role": "user",
+          "content": "我叫张三，今年 28 岁，住在杭州。"
+        }
+      ],
+      "response_format": {
+        "type": "json_object"
+      },
+      "stream": false
+    },
+    "imageKind": null,
+    "notes": [
+      "使用 JSON 模式时，必须在 system 或 user 消息中明确要求输出 JSON，否则可能持续输出空白。"
+    ],
+    "plain": "强制 AI 只输出规范的 JSON，方便程序直接拿来解析。",
+    "outputType": "chat"
+  },
+  {
+    "id": "chat-tools",
+    "group": "对话补全",
+    "name": "工具调用",
+    "description": "声明 function 工具列表，模型返回 tool_calls 及参数。",
+    "method": "POST",
+    "path": "/chat/completions",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": true,
+    "contentType": "application/json",
+    "authMode": "bearer",
+    "extraHeaders": null,
+    "params": [
+      {
+        "name": "model",
+        "label": "模型",
+        "type": "select",
+        "in": "body",
+        "required": true,
+        "defaultValue": "deepseek-flash",
+        "options": [
+          "deepseek-flash",
+          "deepseek-v4-pro"
+        ]
+      }
+    ],
+    "example": {
+      "model": "deepseek-flash",
+      "messages": [
+        {
+          "role": "user",
+          "content": "帮我查一下杭州今天的天气"
+        }
+      ],
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "get_weather",
+            "description": "查询指定城市的实时天气",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "city": {
+                  "type": "string",
+                  "description": "城市名称"
+                }
+              },
+              "required": [
+                "city"
+              ]
+            }
+          }
+        }
+      ],
+      "tool_choice": "auto",
+      "stream": false
+    },
+    "imageKind": null,
+    "notes": [
+      "tool_choice 可选 none / auto / required，或指定 {\"type\":\"function\",\"function\":{\"name\":\"xxx\"}}。"
+    ],
+    "plain": "告诉 AI 你有哪些工具可用，让它自己决定调哪个、给什么参数。",
+    "outputType": "chat"
+  },
+  {
+    "id": "chat-prefix",
+    "group": "对话补全",
+    "name": "对话前缀续写（Beta）",
+    "description": "让模型从指定的 assistant 前缀内容开始续写，需使用 /beta 前缀。",
+    "method": "POST",
+    "path": "/beta/chat/completions",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": true,
+    "contentType": "application/json",
+    "authMode": "bearer",
+    "extraHeaders": null,
+    "params": [
+      {
+        "name": "model",
+        "label": "模型",
+        "type": "select",
+        "in": "body",
+        "required": true,
+        "defaultValue": "deepseek-v4-pro",
+        "options": [
+          "deepseek-flash",
+          "deepseek-v4-pro"
+        ]
+      }
+    ],
+    "example": {
+      "model": "deepseek-v4-pro",
+      "messages": [
+        {
+          "role": "user",
+          "content": "请写一个快速排序的 Python 实现"
+        },
+        {
+          "role": "assistant",
+          "content": "```python\n",
+          "prefix": true
+        }
+      ],
+      "stop": [
+        "```"
+      ],
+      "stream": false
+    },
+    "imageKind": null,
+    "notes": [
+      "最后一条消息必须是 assistant，且 prefix 必须为 true。",
+      "必须使用 base_url = https://api.deepseek.com/beta（本场景已内置）。"
+    ],
+    "plain": "让 AI 从你给定的一句话开头接着写，适合生成固定格式开头的内容（如代码块）。",
+    "outputType": "chat"
+  },
+  {
+    "id": "vision-base64",
+    "group": "多模态（视觉理解）",
+    "name": "图片理解 · 内置示例图",
+    "description": "把本地图片转为 base64 data URL 内联传入，最稳定、不依赖外网。",
+    "method": "POST",
+    "path": "/chat/completions",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": true,
+    "contentType": "application/json",
+    "authMode": "bearer",
+    "extraHeaders": null,
+    "params": [
+      {
+        "name": "model",
+        "label": "模型",
+        "type": "select",
+        "in": "body",
+        "required": true,
+        "defaultValue": "deepseek-flash",
+        "options": [
+          "deepseek-flash"
+        ]
+      }
+    ],
+    "example": {
+      "model": "deepseek-flash",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "这张图片里有什么？请详细描述形状、颜色和文字。"
+            },
+            {
+              "type": "image_url",
+              "image_url": {
+                "url": "__BUILTIN_IMAGE__"
+              }
+            }
+          ]
+        }
+      ],
+      "stream": false
+    },
+    "imageKind": "chat",
+    "notes": [
+      "仅 deepseek-flash 支持图片输入（deepseek-v4-pro 为纯文本模型）。",
+      "图片仅允许出现在 user 消息中，system / assistant 消息带图片会返回 400。",
+      "单张内联图片上限 32 MiB，请求体上限 48 MiB。"
+    ],
+    "plain": "给 AI 看一张本地图片，让它描述图里有什么。",
+    "outputType": "chat"
+  },
+  {
+    "id": "vision-url",
+    "group": "多模态（视觉理解）",
+    "name": "图片理解 · 图片 URL",
+    "description": "传入可公网访问的 http(s) 图片链接，由服务端下载后识别。",
+    "method": "POST",
+    "path": "/chat/completions",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": true,
+    "contentType": "application/json",
+    "authMode": "bearer",
+    "extraHeaders": null,
+    "params": [
+      {
+        "name": "model",
+        "label": "模型",
+        "type": "select",
+        "in": "body",
+        "required": true,
+        "defaultValue": "deepseek-flash",
+        "options": [
+          "deepseek-flash"
+        ]
+      }
+    ],
+    "example": {
+      "model": "deepseek-flash",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "这张图片里有什么？"
+            },
+            {
+              "type": "image_url",
+              "image_url": {
+                "url": "https://www.python.org/static/img/python-logo.png",
+                "detail": "low"
+              }
+            }
+          ]
+        }
+      ],
+      "stream": false
+    },
+    "imageKind": "chat",
+    "notes": [
+      "URL 必须能被 DeepSeek 服务端公网访问（内网、localhost、需登录的链接都会失败并返回 400）。",
+      "URL 最长 8192 字符，图片最大 32 MiB，需在 60 秒内下载完成。",
+      "detail 可选 low（缩放到 512×512，更省 token）/ high / original / auto。"
+    ],
+    "plain": "给 AI 一个图片网址，让它看图描述。",
+    "outputType": "chat"
+  },
+  {
+    "id": "vision-file",
+    "group": "多模态（视觉理解）",
+    "name": "图片理解 · 文件引用",
+    "description": "先用 Files API 上传图片拿到 file_id，再用 file 内容块引用。",
+    "method": "POST",
+    "path": "/chat/completions",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": true,
+    "contentType": "application/json",
+    "authMode": "bearer",
+    "extraHeaders": null,
+    "params": [
+      {
+        "name": "model",
+        "label": "模型",
+        "type": "select",
+        "in": "body",
+        "required": true,
+        "defaultValue": "deepseek-flash",
+        "options": [
+          "deepseek-flash"
+        ]
+      }
+    ],
+    "example": {
+      "model": "deepseek-flash",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "这张图片里有什么？"
+            },
+            {
+              "type": "file",
+              "file_id": "file-api-请先到「上传文件」场景获取"
+            }
+          ]
+        }
+      ],
+      "stream": false
+    },
+    "imageKind": "fileRef",
+    "notes": [
+      "请先在「文件管理 → 上传文件」场景上传图片，拿到 file-api-xxx 后填入 file_id。",
+      "file_id 引用的图片最大 64 MiB，不受 32 MiB 内联限制。"
+    ],
+    "plain": "先把图片上传拿到一个编号，再用编号让 AI 看图（适合大图或一张图多次用）。",
+    "outputType": "chat"
+  },
+  {
+    "id": "fim-completion",
+    "group": "补全（FIM）",
+    "name": "FIM 补全（Beta）",
+    "description": "Fill-In-the-Middle：给出前缀与后缀，让模型补全中间内容，适合代码补全场景。",
+    "method": "POST",
+    "path": "/beta/completions",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": true,
+    "contentType": "application/json",
+    "authMode": "bearer",
+    "extraHeaders": null,
+    "params": [
+      {
+        "name": "model",
+        "label": "模型",
+        "type": "select",
+        "in": "body",
+        "required": true,
+        "defaultValue": "deepseek-v4-pro",
+        "options": [
+          "deepseek-v4-pro"
+        ]
+      },
+      {
+        "name": "max_tokens",
+        "label": "max_tokens",
+        "type": "number",
+        "in": "body",
+        "required": false,
+        "defaultValue": 1024,
+        "options": null
+      }
+    ],
+    "example": {
+      "model": "deepseek-v4-pro",
+      "prompt": "def fib(n):\n    if n <= 1:\n        return n\n",
+      "suffix": "\n\nprint(fib(10))",
+      "max_tokens": 1024,
+      "temperature": 1,
+      "stream": false
+    },
+    "imageKind": null,
+    "notes": [
+      "仅支持 deepseek-v4-pro。",
+      "必须使用 base_url = https://api.deepseek.com/beta（本场景已内置）。"
+    ],
+    "plain": "给一段代码的前半段和后半段，让 AI 补写中间（代码补全）。",
+    "outputType": "chat"
+  },
+  {
+    "id": "tools-search",
+    "group": "网页检索",
+    "name": "网页搜索",
+    "description": "按 query 搜索网页，返回结构化结果（标题、链接、摘要、正文、权威性等）。",
+    "method": "POST",
+    "path": "/v1/tools/search",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": false,
+    "contentType": "application/json",
+    "authMode": "bearer",
+    "extraHeaders": null,
+    "params": [
+      {
+        "name": "count",
+        "label": "count（1-50）",
+        "type": "number",
+        "in": "body",
+        "required": false,
+        "defaultValue": 5,
+        "options": null
+      }
+    ],
+    "example": {
+      "query": "DeepSeek V4 模型 发布",
+      "count": 5,
+      "need_content": false
+    },
+    "imageKind": null,
+    "notes": [
+      "query 支持搜索语法：site:、-site:、\"精确短语\"、lang:zh,en、after:2025、before:2026 等。",
+      "need_content=true 时会在 content 中返回网页正文。",
+      "按请求次数计费（每 1000 次成功请求 5 元），QPS 上限 100。"
+    ],
+    "plain": "让 AI 帮你上网搜索，返回带标题、链接、摘要的结果。",
+    "outputType": "json"
+  },
+  {
+    "id": "tools-fetch",
+    "group": "网页检索",
+    "name": "网页抓取",
+    "description": "抓取单个网页，返回页面标题与 Markdown 正文。",
+    "method": "POST",
+    "path": "/v1/tools/fetch",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": false,
+    "contentType": "application/json",
+    "authMode": "bearer",
+    "extraHeaders": null,
+    "params": [
+      {
+        "name": "url",
+        "label": "目标 URL",
+        "type": "text",
+        "in": "body",
+        "required": true,
+        "defaultValue": "https://api-docs.deepseek.com/zh-cn/",
+        "options": null
+      }
+    ],
+    "example": {
+      "url": "https://api-docs.deepseek.com/zh-cn/"
+    },
+    "imageKind": null,
+    "notes": [
+      "URL 必须含 host、为 HTTP/HTTPS，且不能携带用户名或密码；最长 8192 字符。",
+      "403 表示被安全策略拒绝；404 表示未能获取可用网页内容。",
+      "按请求次数计费（每 1000 次成功请求 5 元），QPS 上限 25。"
+    ],
+    "plain": "抓取某个网页的内容，转成文字（Markdown）给你。",
+    "outputType": "json"
+  },
+  {
+    "id": "responses-basic",
+    "group": "Responses API",
+    "name": "Responses 对话",
+    "description": "OpenAI 兼容 Responses API，使用 input + instructions，支持语义化流式事件。",
+    "method": "POST",
+    "path": "/responses",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": true,
+    "contentType": "application/json",
+    "authMode": "bearer",
+    "extraHeaders": null,
+    "params": [
+      {
+        "name": "model",
+        "label": "模型",
+        "type": "select",
+        "in": "body",
+        "required": true,
+        "defaultValue": "deepseek-flash",
+        "options": [
+          "deepseek-flash",
+          "deepseek-v4-pro"
+        ]
+      },
+      {
+        "name": "max_output_tokens",
+        "label": "max_output_tokens",
+        "type": "number",
+        "in": "body",
+        "required": false,
+        "defaultValue": 1024,
+        "options": null
+      }
+    ],
+    "example": {
+      "model": "deepseek-flash",
+      "instructions": "你是一个乐于助人的中文助手。",
+      "input": "你好，请用一句话介绍你自己",
+      "max_output_tokens": 1024,
+      "stream": false
+    },
+    "imageKind": null,
+    "notes": [
+      "流式时以 response.completed / response.incomplete / response.failed 结束，没有 data: [DONE]。",
+      "previous_response_id、store、conversation、metadata 等参数不支持（无状态 API）。"
+    ],
+    "plain": "另一种聊天方式（OpenAI 新格式），效果和 chat-basic 类似。",
+    "outputType": "chat"
+  },
+  {
+    "id": "responses-vision",
+    "group": "Responses API",
+    "name": "Responses 图片输入",
+    "description": "在 input 中使用 input_image 内容块传入图片（base64 或 URL）。",
+    "method": "POST",
+    "path": "/responses",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": true,
+    "contentType": "application/json",
+    "authMode": "bearer",
+    "extraHeaders": null,
+    "params": [
+      {
+        "name": "model",
+        "label": "模型",
+        "type": "select",
+        "in": "body",
+        "required": true,
+        "defaultValue": "deepseek-flash",
+        "options": [
+          "deepseek-flash"
+        ]
+      }
+    ],
+    "example": {
+      "model": "deepseek-flash",
+      "input": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "input_text",
+              "text": "这张图片里有什么？请详细描述。"
+            },
+            {
+              "type": "input_image",
+              "image_url": "__BUILTIN_IMAGE__",
+              "detail": "low"
+            }
+          ]
+        }
+      ],
+      "stream": false
+    },
+    "imageKind": "responses",
+    "notes": [
+      "input_image 的 image_url 与 file_id 互斥，二者都不传或都传都会返回 400。",
+      "图片仅允许出现在 user / developer 消息以及工具输出中。"
+    ],
+    "plain": "用新格式给 AI 看图。",
+    "outputType": "chat"
+  },
+  {
+    "id": "files-upload",
+    "group": "文件管理",
+    "name": "上传文件",
+    "description": "以 multipart/form-data 上传图片，返回 file_id 供对话请求引用。",
+    "method": "POST",
+    "path": "/files",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": false,
+    "contentType": "multipart/form-data",
+    "authMode": "bearer",
+    "extraHeaders": null,
+    "params": [
+      {
+        "name": "purpose",
+        "label": "purpose",
+        "type": "text",
+        "in": "form",
+        "required": true,
+        "defaultValue": "user_data",
+        "options": null
+      },
+      {
+        "name": "file",
+        "label": "图片文件",
+        "type": "file",
+        "in": "file",
+        "required": true,
+        "defaultValue": null,
+        "options": null
+      }
+    ],
+    "example": null,
+    "imageKind": null,
+    "notes": [
+      "支持 JPEG / PNG / GIF / WebP，格式按文件实际内容判断；单文件最大 64 MiB。"
+    ],
+    "plain": "上传一张图片到 DeepSeek，拿到一个编号，供后续对话引用。",
+    "outputType": "json"
+  },
+  {
+    "id": "files-list",
+    "group": "文件管理",
+    "name": "列出文件",
+    "description": "分页列出已上传的文件，支持游标与排序。",
+    "method": "GET",
+    "path": "/files",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": false,
+    "contentType": "application/json",
+    "authMode": "bearer",
+    "extraHeaders": null,
+    "params": [
+      {
+        "name": "limit",
+        "label": "limit（1-1000）",
+        "type": "number",
+        "in": "query",
+        "required": false,
+        "defaultValue": 20,
+        "options": null
+      },
+      {
+        "name": "order",
+        "label": "order",
+        "type": "select",
+        "in": "query",
+        "required": false,
+        "defaultValue": "desc",
+        "options": [
+          "asc",
+          "desc"
+        ]
+      },
+      {
+        "name": "after",
+        "label": "after（游标）",
+        "type": "text",
+        "in": "query",
+        "required": false,
+        "defaultValue": "",
+        "options": null
+      },
+      {
+        "name": "purpose",
+        "label": "purpose",
+        "type": "text",
+        "in": "query",
+        "required": false,
+        "defaultValue": "",
+        "options": null
+      }
+    ],
+    "example": null,
+    "imageKind": null,
+    "notes": [
+      "留空的查询参数不会发送。"
+    ],
+    "plain": "看看你上传过哪些文件。",
+    "outputType": "json"
+  },
+  {
+    "id": "files-get",
+    "group": "文件管理",
+    "name": "查询文件信息",
+    "description": "根据 file_id 查询单个文件的元信息。",
+    "method": "GET",
+    "path": "/files/{file_id}",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": false,
+    "contentType": "application/json",
+    "authMode": "bearer",
+    "extraHeaders": null,
+    "params": [
+      {
+        "name": "file_id",
+        "label": "file_id",
+        "type": "text",
+        "in": "path",
+        "required": true,
+        "defaultValue": "",
+        "options": null
+      }
+    ],
+    "example": null,
+    "imageKind": null,
+    "notes": [
+      "file_id 形如 file-api-xxxxxxxxxxxxxxxx。"
+    ],
+    "plain": "查某个文件（按编号）的详细信息。",
+    "outputType": "json"
+  },
+  {
+    "id": "files-delete",
+    "group": "文件管理",
+    "name": "删除文件",
+    "description": "根据 file_id 删除已上传的文件。",
+    "method": "DELETE",
+    "path": "/files/{file_id}",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": false,
+    "contentType": "application/json",
+    "authMode": "bearer",
+    "extraHeaders": null,
+    "params": [
+      {
+        "name": "file_id",
+        "label": "file_id",
+        "type": "text",
+        "in": "path",
+        "required": true,
+        "defaultValue": "",
+        "options": null
+      }
+    ],
+    "example": null,
+    "imageKind": null,
+    "notes": [],
+    "plain": "删掉某个已上传的文件。",
+    "outputType": "json"
+  },
+  {
+    "id": "anthropic-messages",
+    "group": "Anthropic 兼容",
+    "name": "Messages 对话",
+    "description": "Anthropic 兼容 Messages API（x-api-key 鉴权），支持流式与思考模式。",
+    "method": "POST",
+    "path": "/anthropic/v1/messages",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": true,
+    "contentType": "application/json",
+    "authMode": "x-api-key",
+    "extraHeaders": {
+      "anthropic-version": "2023-06-01"
+    },
+    "params": [
+      {
+        "name": "model",
+        "label": "模型",
+        "type": "select",
+        "in": "body",
+        "required": true,
+        "defaultValue": "deepseek-flash",
+        "options": [
+          "deepseek-flash",
+          "deepseek-v4-pro"
+        ]
+      },
+      {
+        "name": "max_tokens",
+        "label": "max_tokens",
+        "type": "number",
+        "in": "body",
+        "required": true,
+        "defaultValue": 1024,
+        "options": null
+      },
+      {
+        "name": "temperature",
+        "label": "temperature",
+        "type": "number",
+        "in": "body",
+        "required": false,
+        "defaultValue": 1,
+        "options": null
+      }
+    ],
+    "example": {
+      "model": "deepseek-flash",
+      "max_tokens": 1024,
+      "system": "你是一个乐于助人的中文助手。",
+      "messages": [
+        {
+          "role": "user",
+          "content": "你好，请用一句话介绍你自己"
+        }
+      ],
+      "stream": false
+    },
+    "imageKind": null,
+    "notes": [
+      "Anthropic 兼容端点不支持图片内容块（type=image），需要图片请用 OpenAI 格式或 Responses API。",
+      "claude-opus* 会映射到 deepseek-v4-pro，claude-haiku* / claude-sonnet* 映射到 deepseek-flash。"
+    ],
+    "plain": "用 Anthropic（Claude）那套格式和 DeepSeek 对话。",
+    "outputType": "chat"
+  },
+  {
+    "id": "anthropic-files-upload",
+    "group": "Anthropic 兼容",
+    "name": "上传文件（Anthropic）",
+    "description": "Anthropic 兼容 Files API 上传，需 anthropic-beta 请求头。",
+    "method": "POST",
+    "path": "/anthropic/v1/files",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": false,
+    "contentType": "multipart/form-data",
+    "authMode": "x-api-key",
+    "extraHeaders": {
+      "anthropic-beta": "files-api-2025-04-14"
+    },
+    "params": [
+      {
+        "name": "purpose",
+        "label": "purpose",
+        "type": "text",
+        "in": "form",
+        "required": true,
+        "defaultValue": "user_data",
+        "options": null
+      },
+      {
+        "name": "file",
+        "label": "图片文件",
+        "type": "file",
+        "in": "file",
+        "required": true,
+        "defaultValue": null,
+        "options": null
+      }
+    ],
+    "example": null,
+    "imageKind": null,
+    "notes": [
+      "返回字段与 OpenAI 版本不同：使用 size_bytes / type / mime_type."
+    ],
+    "plain": "用 Anthropic 格式上传图片。",
+    "outputType": "json"
+  },
+  {
+    "id": "anthropic-files-list",
+    "group": "Anthropic 兼容",
+    "name": "列出文件（Anthropic）",
+    "description": "Anthropic 兼容 Files API 列表，使用 after_id / before_id 游标。",
+    "method": "GET",
+    "path": "/anthropic/v1/files",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": false,
+    "contentType": "application/json",
+    "authMode": "x-api-key",
+    "extraHeaders": {
+      "anthropic-beta": "files-api-2025-04-14"
+    },
+    "params": [
+      {
+        "name": "limit",
+        "label": "limit（1-1000）",
+        "type": "number",
+        "in": "query",
+        "required": false,
+        "defaultValue": 20,
+        "options": null
+      },
+      {
+        "name": "after_id",
+        "label": "after_id",
+        "type": "text",
+        "in": "query",
+        "required": false,
+        "defaultValue": "",
+        "options": null
+      },
+      {
+        "name": "before_id",
+        "label": "before_id",
+        "type": "text",
+        "in": "query",
+        "required": false,
+        "defaultValue": "",
+        "options": null
+      }
+    ],
+    "example": null,
+    "imageKind": null,
+    "notes": [
+      "after_id 与 before_id 互斥。"
+    ],
+    "plain": "用 Anthropic 格式列出文件。",
+    "outputType": "json"
+  },
+  {
+    "id": "anthropic-files-get",
+    "group": "Anthropic 兼容",
+    "name": "查询文件（Anthropic）",
+    "description": "Anthropic 兼容 Files API 查询单个文件信息。",
+    "method": "GET",
+    "path": "/anthropic/v1/files/{file_id}",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": false,
+    "contentType": "application/json",
+    "authMode": "x-api-key",
+    "extraHeaders": {
+      "anthropic-beta": "files-api-2025-04-14"
+    },
+    "params": [
+      {
+        "name": "file_id",
+        "label": "file_id",
+        "type": "text",
+        "in": "path",
+        "required": true,
+        "defaultValue": "",
+        "options": null
+      }
+    ],
+    "example": null,
+    "imageKind": null,
+    "notes": [],
+    "plain": "用 Anthropic 格式查文件。",
+    "outputType": "json"
+  },
+  {
+    "id": "anthropic-files-delete",
+    "group": "Anthropic 兼容",
+    "name": "删除文件（Anthropic）",
+    "description": "Anthropic 兼容 Files API 删除文件。",
+    "method": "DELETE",
+    "path": "/anthropic/v1/files/{file_id}",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": false,
+    "contentType": "application/json",
+    "authMode": "x-api-key",
+    "extraHeaders": {
+      "anthropic-beta": "files-api-2025-04-14"
+    },
+    "params": [
+      {
+        "name": "file_id",
+        "label": "file_id",
+        "type": "text",
+        "in": "path",
+        "required": true,
+        "defaultValue": "",
+        "options": null
+      }
+    ],
+    "example": null,
+    "imageKind": null,
+    "notes": [],
+    "plain": "用 Anthropic 格式删文件。",
+    "outputType": "json"
+  },
+  {
+    "id": "anthropic-count-tokens",
+    "group": "Anthropic 兼容",
+    "name": "计算 Token 数",
+    "description": "在正式对话前预估输入会占用多少 token，只返回数量，不生成回答。",
+    "method": "POST",
+    "path": "/anthropic/v1/messages/count_tokens",
+    "baseUrl": "https://api.deepseek.com",
+    "streamable": false,
+    "contentType": "application/json",
+    "authMode": "x-api-key",
+    "extraHeaders": {
+      "anthropic-version": "2023-06-01"
+    },
+    "params": [
+      {
+        "name": "model",
+        "label": "模型",
+        "type": "select",
+        "in": "body",
+        "required": true,
+        "defaultValue": "deepseek-flash",
+        "options": [
+          "deepseek-flash",
+          "deepseek-v4-pro"
+        ]
+      }
+    ],
+    "example": {
+      "model": "deepseek-flash",
+      "messages": [
+        {
+          "role": "user",
+          "content": "你好，请用一句话介绍你自己"
+        }
+      ]
+    },
+    "imageKind": null,
+    "notes": [
+      "官方文档未单独列出该端点，实测可用，返回 {\"input_tokens\": N}。",
+      "只需提供 model 与 messages，不传 max_tokens。"
+    ],
+    "plain": "正式对话前先算一下这段内容会占用多少 token，只返回数字，不产生回答。",
+    "outputType": "json"
+  }
+]
