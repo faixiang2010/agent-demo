@@ -1,0 +1,10 @@
+{
+  "$schema": "https://tinyjs.app/schema/tinyjs.schema.json",
+  "name": "nexus-console",
+  "title": "NEXUS // 深空任务控制台",
+  "size": "1360x860",
+  "id": "com.example.nexus-console",
+  "version": "0.2.0",
+  "rememberWindows": true,
+  "minTinyjsVersion": "0.73.0"
+}

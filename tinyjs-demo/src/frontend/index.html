@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="color-scheme" content="dark">
+  <title>NEXUS // 深空任务控制台</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body class="booting">
+
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M4.6 20c.8-3.8 3.6-5.9 7.4-5.9s6.6 2.1 7.4 5.9"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8.4" cy="15.6" r="3.4"/><path d="M10.9 13.1 20 4M16.6 7.4l2 2M19 5l2 2"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.4 12S6 6.2 12 6.2 21.6 12 21.6 12 18 17.8 12 17.8 2.4 12 2.4 12Z"/><circle cx="12" cy="12" r="2.6"/></symbol>
+    <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M4 4l16 16M9.9 5.2A10.6 10.6 0 0 1 12 5c6 0 9.6 7 9.6 7a17 17 0 0 1-3 3.7M6.3 7.4A16.6 16.6 0 0 0 2.4 12S6 19 12 19a9.7 9.7 0 0 0 3.9-.8"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><path d="M12 11v5.4M12 7.8v.2"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3.2 19 6v5.6c0 4.4-2.9 7.6-7 9.2-4.1-1.6-7-4.8-7-9.2V6Z"/><path d="m9.4 12 1.9 1.9 3.5-4"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7"/><rect x="13.5" y="3.5" width="7" height="7"/><rect x="3.5" y="13.5" width="7" height="7"/><rect x="13.5" y="13.5" width="7" height="7"/></symbol>
+    <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M2.5 13h3.6l2.3-7 4.2 14 2.4-7h6.5"/></symbol>
+    <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="2.6" y="4" width="18.8" height="16" rx="1.4"/><path d="M6.4 9.4 9.6 12l-3.2 2.6M12.6 15H18"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h5.5M15 7h5M4 17h9M18.5 17H20"/><circle cx="12.2" cy="7" r="2.1"/><circle cx="15.5" cy="17" r="2.1"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M14.5 4H19v16h-4.5M10 8.2 5.8 12l4.2 3.8M6 12h8.6"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M14.8 5.6 8.4 12l6.4 6.4"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 15v5h-5M4 15v5h5M20 9V4h-5"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3.6v10.2M7.8 10.2 12 14.4l4.2-4.2M4.6 19.6h14.8"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 6.6h16M9.4 6.6V3.8h5.2v2.8M6.6 6.6l1 13.6h8.8l1-13.6M10 10.4v6M14 10.4v6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M4.4 12.4 9.6 17.6 19.8 6.6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.2V12l3.2 2"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><path d="M3.4 12h17.2M12 3.4c2.9 3.4 2.9 13.8 0 17.2M12 3.4c-2.9 3.4-2.9 13.8 0 17.2"/></symbol>
+    <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="6.4" y="6.4" width="11.2" height="11.2" rx="1.2"/><rect x="10.2" y="10.2" width="3.6" height="3.6"/><path d="M9.4 3.2v3.2M14.6 3.2v3.2M9.4 17.6v3.2M14.6 17.6v3.2M3.2 9.4h3.2M3.2 14.6h3.2M17.6 9.4h3.2M17.6 14.6h3.2"/></symbol>
+  </svg>
+
+  <canvas id="fx" aria-hidden="true"></canvas>
+
+  <div class="ambient" aria-hidden="true">
+    <div class="ambient-glow"></div>
+    <div class="ambient-floor"></div>
+    <div class="ambient-lines"></div>
+    <div class="ambient-vignette"></div>
+  </div>
+
+  <div class="hud-frame" aria-hidden="true">
+    <span class="hc tl"></span><span class="hc tr"></span><span class="hc bl"></span><span class="hc br"></span>
+    <div class="hud-meta left"><i class="pulse"></i> NEXUS ORBITAL CONTROL <span>·</span> 链路 AES-256</div>
+    <div class="hud-meta right"><span id="frame-clock">--:--:--</span> <span>·</span> 41.9°N 87.6°E</div>
+  </div>
+
+  <!-- ── LOGIN ─────────────────────────────────────────────────────────── -->
+  <section id="login" class="login" aria-label="登录">
+    <div class="login-brand">
+      <div class="emblem" aria-hidden="true">
+        <span class="emblem-halo"></span>
+        <svg viewBox="0 0 220 220">
+          <circle class="e-ring e-r1" cx="110" cy="110" r="101"/>
+          <circle class="e-ring e-r2" cx="110" cy="110" r="82"/>
+          <circle class="e-tick" cx="110" cy="110" r="92"/>
+          <g class="e-orbit">
+            <circle class="e-node" cx="110" cy="29" r="3.4"/>
+            <circle class="e-node dim" cx="173" cy="146" r="2.2"/>
+          </g>
+          <g class="e-orbit reverse">
+            <circle class="e-node alt" cx="110" cy="192" r="2.6"/>
+          </g>
+          <path class="e-hex" d="M110 68 147 89v42l-37 21-37-21V89Z"/>
+          <path class="e-core" d="M110 94 123 101.5v15L110 124l-13-7.5v-15Z"/>
+        </svg>
+        <span class="emblem-sweep"></span>
+      </div>
+
+      <h1 class="wordmark">NEXUS<span>//</span>ORBITAL</h1>
+      <p class="brand-sub">深空任务控制台 · DEEP-SPACE OPERATIONS</p>
+
+      <div class="brand-specs">
+        <div><b>12</b><span>在线节点</span></div>
+        <div><b>24<i>ms</i></b><span>中继延迟</span></div>
+        <div><b>99.98<i>%</i></b><span>链路可用</span></div>
+      </div>
+    </div>
+
+    <form id="login-form" class="auth" novalidate>
+      <span class="corner tl"></span><span class="corner tr"></span>
+      <span class="corner bl"></span><span class="corner br"></span>
+
+      <div class="auth-top">
+        <span class="tag"><i class="pulse"></i>SECURE UPLINK</span>
+        <span class="auth-code">NX-2049</span>
+      </div>
+
+      <h2>身份验证</h2>
+      <p class="auth-lead">此终端处于锁定状态。请使用操作员编号与访问密钥接入轨道控制台。</p>
+
+      <div class="field">
+        <label for="account">操作员编号 <span>OPERATOR ID</span></label>
+        <div class="input-wrap">
+          <svg class="input-icon" aria-hidden="true"><use href="#i-user"/></svg>
+          <input id="account" name="account" autocomplete="username" spellcheck="false" value="commander">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="password">访问密钥 <span>ACCESS KEY</span></label>
+        <div class="input-wrap">
+          <svg class="input-icon" aria-hidden="true"><use href="#i-key"/></svg>
+          <input id="password" name="password" type="password" autocomplete="current-password" value="orbit-2049">
+          <button type="button" id="reveal" class="reveal" aria-label="显示密钥" aria-pressed="false">
+            <svg aria-hidden="true"><use href="#i-eye"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <p id="auth-error" class="auth-error" role="alert"></p>
+
+      <div id="boot" class="boot" hidden>
+        <div class="boot-rail"><i id="boot-bar"></i></div>
+        <ol id="boot-steps">
+          <li data-step="0"><span class="mark"></span><span class="label">校验操作员凭据<em>VERIFY CREDENTIALS</em></span><span class="state">待执行</span></li>
+          <li data-step="1"><span class="mark"></span><span class="label">建立量子加密信道<em>NEGOTIATE LINK</em></span><span class="state">待执行</span></li>
+          <li data-step="2"><span class="mark"></span><span class="label">同步轨道控制台<em>SYNC CONSOLE</em></span><span class="state">待执行</span></li>
+        </ol>
+      </div>
+
+      <button id="submit" class="btn-connect" type="submit">
+        <span class="btn-label">建立连接 <em>ESTABLISH UPLINK</em></span>
+        <span class="btn-arrow"><svg aria-hidden="true"><use href="#i-arrow"/></svg></span>
+      </button>
+
+      <p class="auth-hint"><svg aria-hidden="true"><use href="#i-info"/></svg>演示环境 · 任意编号 + 6 位以上密钥即可接入</p>
+    </form>
+  </section>
+
+  <!-- ── CONSOLE ───────────────────────────────────────────────────────── -->
+  <div id="shell" class="shell" hidden>
+    <aside class="sidebar" id="sidebar">
+      <div class="side-brand">
+        <span class="side-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32"><path d="M16 3.4 27 9.6v12.8L16 28.6 5 22.4V9.6Z"/><path d="M16 11.4 21.6 14.6v6.2L16 24l-5.6-3.2v-6.2Z"/></svg>
+        </span>
+        <span class="side-word">NEXUS<em>ORBITAL</em></span>
+        <button id="collapse" class="icon-btn" aria-label="收起菜单" aria-expanded="true">
+          <svg aria-hidden="true"><use href="#i-chevron"/></svg>
+        </button>
+      </div>
+
+      <div class="operator">
+        <div class="avatar"><span id="avatar-initials">CM</span><i class="live"></i></div>
+        <div class="operator-meta">
+          <b id="operator-name">COMMANDER</b>
+          <span id="operator-role">深空指挥员</span>
+          <span class="clearance"><svg aria-hidden="true"><use href="#i-shield"/></svg><em id="operator-clearance">OMEGA</em></span>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="主导航">
+        <button class="nav-item active" data-view="overview" aria-current="page">
+          <svg aria-hidden="true"><use href="#i-grid"/></svg><span class="nav-label">总览<em>Overview</em></span>
+        </button>
+        <button class="nav-item" data-view="monitor">
+          <svg aria-hidden="true"><use href="#i-pulse"/></svg><span class="nav-label">系统监控<em>Telemetry</em></span>
+        </button>
+        <button class="nav-item" data-view="logs">
+          <svg aria-hidden="true"><use href="#i-terminal"/></svg><span class="nav-label">运行日志<em>Live log</em></span>
+          <span class="nav-badge" id="log-badge" hidden>0</span>
+        </button>
+        <button class="nav-item" data-view="settings">
+          <svg aria-hidden="true"><use href="#i-sliders"/></svg><span class="nav-label">终端设置<em>Terminal</em></span>
+        </button>
+      </nav>
+
+      <div class="side-foot">
+        <div class="uplink">
+          <div class="uplink-head"><span>UPLINK</span><b id="uplink-latency">-- ms</b></div>
+          <div class="uplink-bars" id="uplink-bars"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <span class="uplink-state" id="uplink-state">加密链路稳定</span>
+        </div>
+        <div class="side-note">DEMO · 指标含合成数据</div>
+        <button id="logout" class="logout">
+          <svg aria-hidden="true"><use href="#i-logout"/></svg><span>断开连接</span>
+        </button>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header class="topbar">
+        <div class="crumbs">
+          <span class="crumb-root">NEXUS</span><span class="crumb-sep">/</span>
+          <h1 id="view-title">总览</h1>
+        </div>
+        <div class="top-meta">
+          <span class="meta-chip" id="mission-clock">--</span>
+          <span class="meta-chip live" id="live-chip"><i class="pulse"></i>TELEMETRY LIVE</span>
+          <button class="icon-btn" id="fullscreen" aria-label="切换全屏">
+            <svg aria-hidden="true"><use href="#i-expand"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <main id="views">
+
+        <!-- OVERVIEW -->
+        <section class="view" data-view="overview" id="view-overview">
+          <div class="kpis">
+            <div class="kpi">
+              <span class="kpi-label">CPU 负载<em>PROCESSOR</em></span>
+              <div class="kpi-value"><b id="kpi-cpu">--</b><small>%</small></div>
+              <canvas class="spark" data-spark="cpu" height="34"></canvas>
+              <span class="kpi-foot" id="kpi-cpu-foot">采样中</span>
+            </div>
+            <div class="kpi">
+              <span class="kpi-label">内存占用<em>MEMORY</em></span>
+              <div class="kpi-value"><b id="kpi-mem">--</b><small>%</small></div>
+              <canvas class="spark" data-spark="mem" height="34"></canvas>
+              <span class="kpi-foot" id="kpi-mem-foot">合成指标</span>
+            </div>
+            <div class="kpi">
+              <span class="kpi-label">在线节点<em>CLUSTER</em></span>
+              <div class="kpi-value"><b id="kpi-nodes">--</b><small>/ 12</small></div>
+              <canvas class="spark" data-spark="nodes" height="34"></canvas>
+              <span class="kpi-foot" id="kpi-nodes-foot">中继在线</span>
+            </div>
+            <div class="kpi">
+              <span class="kpi-label">下行带宽<em>DOWNLINK</em></span>
+              <div class="kpi-value"><b id="kpi-tx">--</b><small>MB/s</small></div>
+              <canvas class="spark" data-spark="tx" height="34"></canvas>
+              <span class="kpi-foot" id="kpi-tx-foot">最近 60 秒</span>
+            </div>
+          </div>
+
+          <div class="overview-grid">
+            <section class="panel chart-panel">
+              <div class="panel-head">
+                <h2><i class="mark"></i>网络吞吐 <em>THROUGHPUT</em></h2>
+                <div class="chart-legend"><span class="lg down">下行 <b id="lg-rx">--</b></span><span class="lg up">上行 <b id="lg-tx">--</b></span></div>
+              </div>
+              <div class="chart-wrap">
+                <canvas id="throughput"></canvas>
+                <div class="chart-tip" id="chart-tip" hidden></div>
+              </div>
+            </section>
+
+            <section class="panel gauge-panel">
+              <div class="panel-head">
+                <h2><i class="mark"></i>核心负载 <em>CORE ARRAY</em></h2>
+                <span class="panel-meta" id="core-count">-- 核</span>
+              </div>
+              <div class="gauge">
+                <svg viewBox="0 0 220 220" aria-hidden="true">
+                  <circle class="g-track" cx="110" cy="110" r="86"/>
+                  <circle class="g-cpu" id="g-cpu" cx="110" cy="110" r="86"/>
+                  <circle class="g-track inner" cx="110" cy="110" r="66"/>
+                  <circle class="g-mem" id="g-mem" cx="110" cy="110" r="66"/>
+                </svg>
+                <div class="gauge-center">
+                  <b id="gauge-cpu">--<small>%</small></b>
+                  <span>CPU</span>
+                  <em id="gauge-mem">MEM --%</em>
+                </div>
+              </div>
+              <div class="core-bars" id="core-bars"></div>
+            </section>
+          </div>
+
+          <div class="overview-lower">
+            <section class="panel queue-panel">
+              <div class="panel-head">
+                <h2><i class="mark"></i>任务队列 <em>SCHEDULER</em></h2>
+                <span class="panel-meta" id="queue-meta">--</span>
+              </div>
+              <div class="queue-table">
+                <div class="q-row q-head"><span>任务</span><span>状态</span><span>进度</span><span>剩余</span></div>
+                <div id="queue-body"></div>
+              </div>
+            </section>
+
+            <section class="panel feed-panel">
+              <div class="panel-head">
+                <h2><i class="mark"></i>事件流 <em>EVENT FEED</em></h2>
+                <span class="panel-meta"><i class="pulse"></i> LIVE</span>
+              </div>
+              <ul class="feed" id="feed"></ul>
+            </section>
+          </div>
+        </section>
+
+        <!-- MONITOR -->
+        <section class="view" data-view="monitor" id="view-monitor" hidden>
+          <div class="monitor-grid">
+            <section class="panel">
+              <div class="panel-head">
+                <h2><i class="mark"></i>系统档案 <em>HOST PROFILE</em></h2>
+                <span class="panel-meta" id="host-meta">REAL</span>
+              </div>
+              <dl class="spec-list" id="sysinfo"></dl>
+            </section>
+
+            <section class="panel">
+              <div class="panel-head">
+                <h2><i class="mark"></i>节点集群 <em>NODE CLUSTER</em></h2>
+                <span class="panel-meta" id="cluster-meta">--</span>
+              </div>
+              <div class="cluster" id="cluster"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-head">
+                <h2><i class="mark"></i>CPU 核心阵列 <em>CORE LOAD</em></h2>
+                <span class="panel-meta" id="core-meta">LIVE</span>
+              </div>
+              <div class="core-grid" id="core-grid"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-head">
+                <h2><i class="mark"></i>网络接口 <em>INTERFACES</em></h2>
+                <span class="panel-meta">HOST</span>
+              </div>
+              <div class="ifaces" id="ifaces"></div>
+            </section>
+          </div>
+        </section>
+
+        <!-- LOGS -->
+        <section class="view" data-view="logs" id="view-logs" hidden>
+          <section class="panel log-panel">
+            <div class="log-toolbar">
+              <div class="filters" role="group" aria-label="日志级别筛选">
+                <button class="chip active" data-level="all">全部 <em id="log-count">0</em></button>
+                <button class="chip" data-level="info">INFO</button>
+                <button class="chip" data-level="warn">WARN</button>
+                <button class="chip" data-level="alert">ALERT</button>
+              </div>
+              <div class="log-actions">
+                <label class="switch inline"><input id="autoscroll" type="checkbox" checked><span class="track" aria-hidden="true"></span><span>自动滚动</span></label>
+                <button class="ghost-btn" id="export-logs"><svg aria-hidden="true"><use href="#i-download"/></svg>导出</button>
+                <button class="ghost-btn" id="clear-logs"><svg aria-hidden="true"><use href="#i-trash"/></svg>清空</button>
+              </div>
+            </div>
+            <div class="log-stream" id="log-stream" role="log" aria-live="polite"></div>
+          </section>
+        </section>
+
+        <!-- SETTINGS -->
+        <section class="view" data-view="settings" id="view-settings" hidden>
+          <div class="settings-grid">
+            <section class="panel profile-panel">
+              <div class="panel-head">
+                <h2><i class="mark"></i>操作员档案 <em>OPERATOR</em></h2>
+                <span class="panel-meta">ACTIVE</span>
+              </div>
+              <div class="profile-body">
+                <div class="avatar xl"><span id="profile-initials">CM</span><i class="live"></i></div>
+                <h3 id="profile-name">COMMANDER</h3>
+                <p id="profile-role">深空指挥员</p>
+                <div class="profile-tags">
+                  <span class="tag-chip"><svg aria-hidden="true"><use href="#i-shield"/></svg><em id="profile-clearance">OMEGA</em></span>
+                  <span class="tag-chip"><svg aria-hidden="true"><use href="#i-globe"/></svg>ORBITAL</span>
+                </div>
+                <div class="profile-rows">
+                  <div><span>会话编号</span><b id="session-token">--</b></div>
+                  <div><span>接入时间</span><b id="session-since">--</b></div>
+                  <div><span>加密协议</span><b>AES-256-GCM</b></div>
+                  <div><span>终端节点</span><b id="session-host">--</b></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel prefs-panel">
+              <div class="panel-head">
+                <h2><i class="mark"></i>终端偏好 <em>PREFERENCES</em></h2>
+                <span class="panel-meta">LOCAL</span>
+              </div>
+              <div class="prefs">
+                <label class="pref">
+                  <span class="pref-text"><b>界面动效</b><small>粒子、扫描线与视图过渡</small></span>
+                  <span class="switch"><input id="pref-motion" type="checkbox" checked><span class="track" aria-hidden="true"></span></span>
+                </label>
+                <label class="pref">
+                  <span class="pref-text"><b>紧凑布局</b><small>缩小间距，容纳更多数据</small></span>
+                  <span class="switch"><input id="pref-compact" type="checkbox"><span class="track" aria-hidden="true"></span></span>
+                </label>
+                <label class="pref">
+                  <span class="pref-text"><b>实时遥测</b><small>接收后端 1.6s 推送的采样流</small></span>
+                  <span class="switch"><input id="pref-telemetry" type="checkbox" checked><span class="track" aria-hidden="true"></span></span>
+                </label>
+                <div class="prefs-foot">
+                  <button class="ghost-btn" id="reset-prefs">恢复默认</button>
+                  <span class="save-state" id="save-state">设置自动保存</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel session-panel">
+              <div class="panel-head">
+                <h2><i class="mark"></i>会话控制 <em>SESSION</em></h2>
+                <span class="panel-meta" id="session-uptime">--</span>
+              </div>
+              <div class="session-body">
+                <div class="session-line">
+                  <svg aria-hidden="true"><use href="#i-clock"/></svg>
+                  <span>本次接入已持续 <b id="session-elapsed">--</b></span>
+                </div>
+                <div class="session-line">
+                  <svg aria-hidden="true"><use href="#i-cpu"/></svg>
+                  <span>后端运行时 <b id="session-runtime">--</b></span>
+                </div>
+                <button class="danger-btn" id="logout-2">
+                  <svg aria-hidden="true"><use href="#i-logout"/></svg>断开连接并锁定终端
+                </button>
+              </div>
+            </section>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <div id="wipe" aria-hidden="true"></div>
+</body>
+</html>
