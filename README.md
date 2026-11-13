@@ -35,6 +35,7 @@
 | [lang-graph](./lang-graph/) | Node.js + LangChain.js | LangChain / LangGraph JavaScript 版 HelloWorld 合集（6 个示例） |
 | [my-electron-app](./my-electron-app/) | Electron Forge 7 | Electron 基础应用（启用安全 Fuses 配置） |
 | [tinyjs-demo](./tinyjs-demo/) | tinyjs 0.73+（txiki.js） | 桌面 UI 演示：模拟登录 + 左菜单 / 右内容控制台，深空 HUD 风格，真实系统遥测 |
+| [tinyjs-deepseek-wrapper](./tinyjs-deepseek-wrapper/) | tinyjs 0.73+（txiki.js） | 站点包装器：把 chat.deepseek.com 包成桌面应用，origin 级 api gate 隔离权限 |
 
 ### PowerShell
 
@@ -98,7 +99,8 @@ agent-demo/
 ├── lang-graph-python/      # LangGraph Python Demo
 ├── my-electron-app/        # Electron 基础应用
 ├── spring-ai-alibaba-demo/ # Spring AI Alibaba Demo
-└── tinyjs-demo/            # tinyjs 桌面控制台 UI 演示
+├── tinyjs-demo/            # tinyjs 桌面控制台 UI 演示
+└── tinyjs-deepseek-wrapper/# tinyjs 站点包装器示例（chat.deepseek.com）
 ```
 
 ---
@@ -161,6 +163,7 @@ lang-graph                 ←  LangChain.js / LangGraph.js
 crew_demo                  ←  CrewAI（独立 Python Agent 框架）
 my-electron-app            ←  Electron Forge（无 Agent 依赖，纯 UI 脚手架）
 tinyjs-demo                ←  tinyjs / txiki.js（无 Agent 依赖，纯桌面 UI 演示）
+tinyjs-deepseek-wrapper    ←  tinyjs / txiki.js（无 Agent 依赖，站点包装器示例）
 deepseek-api-demo          ←  DeepSeek API 直调（无框架依赖）
 czsc-demo                  ←  Python（量化，无 Agent 依赖）
 c-cleanup                  ←  PowerShell（运维脚本，无 Agent 依赖）

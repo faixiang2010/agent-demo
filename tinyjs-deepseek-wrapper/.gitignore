@@ -1,0 +1,35 @@
+# ============ tinyjs 开发 / 构建产物 ============
+# tinyjs dev 生成的后端打包与 sidecar 中间目录
+.build/
+# tinyjs build / publish 输出（dist/<name>.exe、dist/<Name>.app、dist/publish/…）
+dist/
+release/
+
+# ============ 依赖（使用 vite/ts 模板时产生）============
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+.vite/
+*.tsbuildinfo
+
+# ============ 日志与缓存 ============
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.cache/
+
+# ============ 编辑器 / 系统文件 ============
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ============ AI 工具本地配置（tinyjs 模板生成）============
+.agents/
+.claude/

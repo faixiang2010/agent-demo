@@ -1,0 +1,29 @@
+{
+  "$schema": "https://tinyjs.app/schema/tinyjs.schema.json",
+  "name": "deepseek-wrapper",
+  "title": "DeepSeek Chat",
+  "size": "1280x800",
+  "minSize": "960x640",
+  "id": "com.electron.deepseek-wrapper",
+  "version": "0.1.0",
+  "url": "https://chat.deepseek.com/",
+  "popups": "window",
+  "downloads": "ask",
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+  "api": {
+    "disable": ["*"],
+    "enable": [
+      "win.close",
+      "win.minimize",
+      "win.maximize",
+      "win.unmaximize",
+      "win.zoom",
+      "win.startDrag"
+    ],
+    "origins": {
+      "https://chat.deepseek.com": "wrapper",
+      "https://*.deepseek.com": "wrapper"
+    }
+  },
+  "minTinyjsVersion": "0.73.0"
+}
