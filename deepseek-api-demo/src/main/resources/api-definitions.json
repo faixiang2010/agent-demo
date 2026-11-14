@@ -90,9 +90,9 @@
         "type": "select",
         "in": "body",
         "required": true,
-        "defaultValue": "deepseek-flash",
+        "defaultValue": "deepseek-v4-flash",
         "options": [
-          "deepseek-flash",
+          "deepseek-v4-flash",
           "deepseek-v4-pro"
         ]
       },
@@ -116,7 +116,7 @@
       }
     ],
     "example": {
-      "model": "deepseek-flash",
+      "model": "deepseek-v4-flash",
       "messages": [
         {
           "role": "system",
@@ -127,13 +127,17 @@
           "content": "你好，请用一句话介绍你自己"
         }
       ],
+      "thinking": {
+        "type": "disabled"
+      },
       "temperature": 1,
       "max_tokens": 2048,
       "stream": false
     },
     "imageKind": null,
     "notes": [
-      "支持流式输出：勾选上方「流式输出」后点击调用。"
+      "支持流式输出：勾选上方「流式输出」后点击调用。",
+      "thinking.type 默认为 enabled；本例显式设为 disabled，使 temperature 等采样参数生效。"
     ],
     "plain": "最常用的聊天接口——发一句话，让 AI 回你一句话。",
     "outputType": "chat"
@@ -159,8 +163,20 @@
         "required": true,
         "defaultValue": "deepseek-v4-pro",
         "options": [
-          "deepseek-flash",
+          "deepseek-v4-flash",
           "deepseek-v4-pro"
+        ]
+      },
+      {
+        "name": "reasoning_effort",
+        "label": "reasoning_effort",
+        "type": "select",
+        "in": "body",
+        "required": false,
+        "defaultValue": "high",
+        "options": [
+          "high",
+          "max"
         ]
       },
       {
@@ -191,8 +207,8 @@
     "imageKind": null,
     "notes": [
       "thinking.type 默认即为 enabled，可设为 disabled 关闭。",
-      "reasoning_effort 可选 high / max（low、medium 会映射为 high）。",
-      "思考模式下 temperature、top_p 不生效。"
+      "reasoning_effort 普通请求默认为 high，正式可选 high / max；low、medium 映射为 high，xhigh 映射为 max。",
+      "思考模式下 temperature、top_p、presence_penalty、frequency_penalty 不生效。"
     ],
     "plain": "让 AI 先在心里想一遍再回答，适合需要推理的难题（数学、逻辑、比较大小等）。",
     "outputType": "chat"
@@ -216,15 +232,15 @@
         "type": "select",
         "in": "body",
         "required": true,
-        "defaultValue": "deepseek-flash",
+        "defaultValue": "deepseek-v4-flash",
         "options": [
-          "deepseek-flash",
+          "deepseek-v4-flash",
           "deepseek-v4-pro"
         ]
       }
     ],
     "example": {
-      "model": "deepseek-flash",
+      "model": "deepseek-v4-flash",
       "messages": [
         {
           "role": "system",
@@ -246,7 +262,9 @@
       "stream": false
     },
     "imageKind": null,
-    "notes": [],
+    "notes": [
+      "默认 thinking.type=enabled；无工具调用时，历史 assistant 的 reasoning_content 无需参与上下文拼接，传入也会被忽略。"
+    ],
     "plain": "带上之前聊过的内容，让 AI 记得上下文，接着往下聊。",
     "outputType": "chat"
   },
@@ -269,15 +287,15 @@
         "type": "select",
         "in": "body",
         "required": true,
-        "defaultValue": "deepseek-flash",
+        "defaultValue": "deepseek-v4-flash",
         "options": [
-          "deepseek-flash",
+          "deepseek-v4-flash",
           "deepseek-v4-pro"
         ]
       }
     ],
     "example": {
-      "model": "deepseek-flash",
+      "model": "deepseek-v4-flash",
       "messages": [
         {
           "role": "system",
@@ -319,15 +337,15 @@
         "type": "select",
         "in": "body",
         "required": true,
-        "defaultValue": "deepseek-flash",
+        "defaultValue": "deepseek-v4-flash",
         "options": [
-          "deepseek-flash",
+          "deepseek-v4-flash",
           "deepseek-v4-pro"
         ]
       }
     ],
     "example": {
-      "model": "deepseek-flash",
+      "model": "deepseek-v4-flash",
       "messages": [
         {
           "role": "user",
@@ -360,7 +378,8 @@
     },
     "imageKind": null,
     "notes": [
-      "tool_choice 可选 none / auto / required，或指定 {\"type\":\"function\",\"function\":{\"name\":\"xxx\"}}。"
+      "tool_choice 可选 none / auto / required，或指定 {\"type\":\"function\",\"function\":{\"name\":\"xxx\"}}。",
+      "思考模式下发生工具调用时，后续所有轮次必须完整回传 assistant 的 reasoning_content（连同 content、tool_calls 等必要字段），否则 API 返回 400。"
     ],
     "plain": "告诉 AI 你有哪些工具可用，让它自己决定调哪个、给什么参数。",
     "outputType": "chat"
@@ -386,7 +405,7 @@
         "required": true,
         "defaultValue": "deepseek-v4-pro",
         "options": [
-          "deepseek-flash",
+          "deepseek-v4-flash",
           "deepseek-v4-pro"
         ]
       }
